@@ -1,0 +1,47 @@
+name: Validate local scanner action
+
+on:
+  push:
+    branches:
+    - '*'
+    - '!main'
+
+permissions:
+  contents: read
+  checks: write
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Install modules
+        run: npm ci
+      - name: eslint
+        run: npm run lint:check
+
+  build-action-docker-image:
+    needs: [ lint ]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Build local scanner action image
+        run: |
+          docker build .
+  
+  verify-action:
+    runs-on: ubuntu-latest
+    needs: [ build-action-docker-image ]
+    steps:
+      - uses: actions/checkout@v3
+      - uses : ./
+        name: Run action against repoository
+        with:
+          apiUrl: ${{ secrets.CONTRAST__API__URL }}
+          apiUserName: ${{ secrets.CONTRAST__API__USER_NAME }}
+          apiKey: ${{ secrets.CONTRAST__API__API_KEY }}
+          apiServiceKey: ${{ secrets.CONTRAST__API__SERVICE_KEY }}
+          apiOrgId: ${{ secrets.CONTRAST__API__ORGANIZATION }}
+          checks: true
+          severity: medium
+          path: src

@@ -1,0 +1,62 @@
+name: Contrast Local Scan
+description: Runs Contrast local scanner against the current repository
+inputs:
+  apiUrl:  # id of input
+    description: Url of your contrast instance, defaults to https://app.contrastsecurity.com/
+    required: true
+    default: 'https://app.contrastsecurity.com/'
+  apiUserName:
+    description: User name for authentication
+    required: true
+  apiKey:
+    description: API Key from user settings
+    required: true
+  apiServiceKey:
+    description: Service Key from user settings
+    required: true
+  apiOrgId:
+    description: Organization ID from user settings
+    required: true
+  checks:
+    description: > 
+      If set, checks will be added to the current commit based on any vulnerabilities found.
+      Requires the 'checks: write' permission.
+    required: false
+    default: false
+  codeQuality:
+    description: Set this to true to include code quality rules when executing source code scanner.
+    required: false
+    default: false
+  label:
+    description: Label to associate with the current scan. Defaults to the current ref e.g. refs/heads/main
+  memory:
+    description: Memory setting passed to the underlying scan engine. Defaulted to 2g
+    required: false
+  path:
+    description: Path to scan with local scanner. Defaults to the current repository path.
+    required: false
+  projectName:
+    description: Project to associate scan with. Defaults to current github repository name e.g. Example-ORG/example-repo
+    required: false
+  resourceGroup:
+    description: Resource group to assign newly created projects to.
+    required: false
+  strategy:
+    description: >
+      Used in conjuction with severity or checks, set this valid to fail the build based on agreggated project
+      vulnerabilities or scan level. Valid values are "project" or "scan". Defaults to "project".
+    required: false
+    default: "project"
+  severity: 
+    description: > 
+      Set this to cause the build to fail if vulnerabilities are found exceeding this severity or higher. 
+      Valid values are CRITICAL, HIGH, MEDIUM, LOW, NOTE.
+    required: false
+  token:
+    description: >
+      GitHub token for GitHub API requests. Defaults to GITHUB_TOKEN.
+    required: true
+    default: ${{ github.token }}
+runs:
+  using: 'docker'
+  image: 'Dockerfile'
