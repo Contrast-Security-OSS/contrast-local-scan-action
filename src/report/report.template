@@ -1,0 +1,6 @@
+# Contrast Local Scan
+
+| Description |                                 | Critical               | High               | Medium               | Low               | Note               |
+|-------------|------------------------------------------|------------------------|--------------------|----------------------|-------------------|--------------------|
+| Project level aggregated open vulnerabilities | [ {{ project.name }} ]({{ project.url }}) | {{ project.critical }} | {{ project.high }} | {{ project.medium }} | {{ project.low }} | {{ project.note }} |
+| Scan level individual results                 | [ {{ scan.name }} ]({{ scan.url }})       | {{ scan.critical }}    | {{ scan.high }}    | {{ scan.medium }}    | {{ scan.low }}    | {{ scan.note }}    |
