@@ -31,7 +31,7 @@
   "release-it": {
     "git": {
       "tagName": "v${version}",
-      "commitMessage": "[auto] release ${version} [skip ci]"
+      "commitMessage": "[auto] Release ${version} [skip ci]"
     },
     "npm": {
       "publish": false
