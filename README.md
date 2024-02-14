@@ -109,11 +109,12 @@ up. After which, complete the following steps:
 - checks : If set, GitHub checks will be added to the current commit based on any vulnerabilities found.
 - codeQuality : Passes the -q option to the Contrast local scanner to include code quality rules in the scan.
 - label : Label to associate with the current scan. Defaults to the current ref e.g. **refs/heads/main**
-- memory : Memory setting passed to the underlying scan engine. Defaulted to 2g.
+- memory : Memory setting passed to the underlying scan engine. Defaulted to 8g.
 - path : Path to scan with Contrast local scanner. Defaults to the current repository path.
 - projectName : Project to associate scan with. Defaults to current GitHub repository name e.g. **Contrast-Security-OSS/contrast-local-scan-action**
 - resourceGroup : Passes the -r option to the Contrast local scanner to associate newly created projects with the specified resource group.
 - severity : Set this to cause the build to fail if vulnerabilities are found at this severity or higher. Valid values are critical, high, medium, low, note.
+- timeout: Execution timeout (in seconds) setting passed to the underlying scan engine. Defaulted to 60 minutes.
 
 
 
