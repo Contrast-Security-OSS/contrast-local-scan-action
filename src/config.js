@@ -20,7 +20,7 @@ const codeQuality = core.getBooleanInput("codeQuality");
 const label = core.getInput("label") || process.env.GITHUB_REF;
 
 // Pinning the local scanner version
-const localScannerVersion = "1.0.7";
+const localScannerVersion = "1.0.8";
 
 const memory = core.getInput("memory");
 const path = core.getInput("path") || process.env.GITHUB_WORKSPACE;
@@ -29,6 +29,7 @@ const projectName =
 const resourceGroup = core.getInput("resourceGroup");
 const severity = core.getInput("severity")?.toLowerCase() || undefined;
 const strategy = core.getInput("strategy") || "project";
+const timeout = core.getInput("timeout");
 const title = "Contrast Local Scan";
 const token = core.getInput("token");
 
@@ -50,6 +51,7 @@ module.exports = {
   resourceGroup,
   severity,
   strategy,
+  timeout,
   title,
   token,
 };

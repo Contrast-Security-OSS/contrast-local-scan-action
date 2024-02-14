@@ -17,6 +17,7 @@ const {
   resourceGroup,
   severity,
   strategy,
+  timeout,
   title,
 } = require("./config");
 
@@ -49,6 +50,10 @@ function scanOpts(jar) {
 
   if (memory) {
     options.push("--memory", memory);
+  }
+
+  if (timeout) {
+    options.push("--timeout", timeout);
   }
 
   if (resourceGroup) {

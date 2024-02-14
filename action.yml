@@ -30,7 +30,7 @@ inputs:
   label:
     description: Label to associate with the current scan. Defaults to the current ref e.g. refs/heads/main
   memory:
-    description: Memory setting passed to the underlying scan engine. Defaulted to 2g
+    description: Memory setting passed to the underlying scan engine. Defaulted to 8g
     required: false
   path:
     description: Path to scan with local scanner. Defaults to the current repository path.
@@ -51,6 +51,9 @@ inputs:
     description: > 
       Set this to cause the build to fail if vulnerabilities are found exceeding this severity or higher. 
       Valid values are CRITICAL, HIGH, MEDIUM, LOW, NOTE.
+    required: false
+  timeout:
+    description: Execution timeout (in seconds) setting passed to the underlying scan engine. Defaulted to 60 minutes.
     required: false
   token:
     description: >
