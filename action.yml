@@ -1,5 +1,8 @@
 name: Contrast Local Scan
 description: Runs Contrast local scanner against the current repository
+branding:
+  icon: crosshair
+  color: green
 inputs:
   apiUrl:  # id of input
     description: Url of your contrast instance, defaults to https://app.contrastsecurity.com/
