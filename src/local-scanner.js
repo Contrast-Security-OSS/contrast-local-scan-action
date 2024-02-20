@@ -13,7 +13,13 @@ const LOCAL_SCANNER_CACHE_KEY = `${CONTRAST_LOCAL_SCANNER}-${localScannerVersion
 async function getLocalScannerArtifact(version) {
   const artifacts = await getArtifacts(version);
 
-  return artifacts.filter((release) => release.name.endsWith(".zip"))[0];
+  if (artifacts && artifacts.length > 0) {
+    const zipArtifacts = artifacts.filter((release) => release.name.endsWith(".zip"));
+
+    if (zipArtifacts && zipArtifacts.length > 0) return zipArtifacts[0];
+  }
+
+  throw new Error(`Unable to download local scanner ${version} artifact`);
 }
 
 const getLocalScannerLocation = (directory) => {
