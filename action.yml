@@ -30,6 +30,11 @@ inputs:
     description: Set this to true to include code quality rules when executing source code scanner.
     required: false
     default: false
+  defaultBranch:
+    description: > 
+      Set this to override the default branching behviour in scan wherby scan results
+      not on the default github branch are not saved against the main project.
+    required: false
   label:
     description: Label to associate with the current scan. Defaults to the current ref e.g. refs/heads/main
   memory:

@@ -10,10 +10,12 @@ const {
   apiServiceKey,
   checks,
   codeQuality,
+  defaultBranch,
   label,
   memory,
   path,
   projectName,
+  ref,
   resourceGroup,
   severity,
   strategy,
@@ -58,6 +60,10 @@ function scanOpts(jar) {
 
   if (resourceGroup) {
     options.push("-r", resourceGroup);
+  }
+
+  if (!defaultBranch) {
+    options.push("--branch", ref);
   }
 
   options.push(path);
