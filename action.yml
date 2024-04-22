@@ -32,7 +32,7 @@ inputs:
     default: false
   defaultBranch:
     description: >
-      Set this to override the default branching behviour in scan whereby scan results
+      Set this to true or false explicitly override the default branching behviour in scan whereby scan results
       not on the default github branch are not saved against the main project.
     required: false
   label:
