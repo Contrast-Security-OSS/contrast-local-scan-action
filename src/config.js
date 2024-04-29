@@ -43,7 +43,7 @@ const defaultBranch = isDefaultBranch();
 const label = core.getInput("label") || process.env.GITHUB_REF;
 
 // Pinning the local scanner version
-const localScannerVersion = "1.0.10-SNAPSHOT";
+const localScannerVersion = "1.0.10";
 
 const memory = core.getInput("memory");
 const path = core.getInput("path") || process.env.GITHUB_WORKSPACE;
