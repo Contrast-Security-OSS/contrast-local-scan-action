@@ -21,7 +21,7 @@ inputs:
     description: Organization ID from user settings
     required: true
   checks:
-    description: > 
+    description: >
       If set, checks will be added to the current commit based on any vulnerabilities found.
       Requires the 'checks: write' permission.
     required: false
@@ -30,6 +30,11 @@ inputs:
     description: Set this to true to include code quality rules when executing source code scanner.
     required: false
     default: false
+  defaultBranch:
+    description: >
+      Set this to true or false explicitly override the default branching behviour in scan whereby scan results
+      not on the default github branch are not saved against the main project.
+    required: false
   label:
     description: Label to associate with the current scan. Defaults to the current ref e.g. refs/heads/main
   memory:
@@ -50,9 +55,9 @@ inputs:
       vulnerabilities or scan level. Valid values are "project" or "scan". Defaults to "project".
     required: false
     default: "project"
-  severity: 
-    description: > 
-      Set this to cause the build to fail if vulnerabilities are found exceeding this severity or higher. 
+  severity:
+    description: >
+      Set this to cause the build to fail if vulnerabilities are found exceeding this severity or higher.
       Valid values are CRITICAL, HIGH, MEDIUM, LOW, NOTE.
     required: false
   timeout:
