@@ -5,7 +5,7 @@ const DEFAULT_BRANCH_NAME = github.context.payload?.repository?.default_branch;
 
 const thisBranchName = () => {
   core.info('Checking branch name');
-  core.info(github.context.payload);
+  core.info(JSON.stringify(github.context.payload, null, 2));
 
   const refParts = github.context.payload.ref.split('/');
 
