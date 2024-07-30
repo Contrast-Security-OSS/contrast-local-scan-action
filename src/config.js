@@ -67,7 +67,7 @@ const ref = getRef();
 const label = core.getInput("label") || ref;
 
 // Pinning the local scanner version
-const localScannerVersion = "1.0.10";
+const localScannerVersion = "1.1.1";
 
 const memory = core.getInput("memory");
 const path = core.getInput("path") || process.env.GITHUB_WORKSPACE;
