@@ -43,6 +43,8 @@ jobs:
     needs: [ build-action-docker-image ]
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.head_ref || github.ref_name }}
       - uses : ./
         name: Run action against itself
         with:
@@ -59,6 +61,8 @@ jobs:
     needs: [ verify-action ]
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.head_ref || github.ref_name }}
       - name: Install modules
         run: npm ci
       - name: release
