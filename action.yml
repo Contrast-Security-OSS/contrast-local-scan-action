@@ -4,7 +4,7 @@ branding:
   icon: crosshair
   color: green
 inputs:
-  apiUrl:  # id of input
+  apiUrl: # id of input
     description: Url of your contrast instance, defaults to https://app.contrastsecurity.com/
     required: true
     default: 'https://app.contrastsecurity.com/'
@@ -22,8 +22,8 @@ inputs:
     required: true
   checks:
     description: >
-      If set, checks will be added to the current commit based on any vulnerabilities found.
-      Requires the 'checks: write' permission.
+      If set, checks will be added to the current commit based on any vulnerabilities found. Requires the 'checks: write' permission.
+
     required: false
     default: false
   codeQuality:
@@ -32,8 +32,8 @@ inputs:
     default: false
   defaultBranch:
     description: >
-      Set this to true or false explicitly override the default branching behviour in scan whereby scan results
-      not on the default github branch are not saved against the main project.
+      Set this to true or false explicitly override the default branching behviour in scan whereby scan results not on the default github branch are not saved against the main project.
+
     required: false
   label:
     description: Label to associate with the current scan. Defaults to the current ref e.g. refs/heads/main
@@ -51,14 +51,14 @@ inputs:
     required: false
   strategy:
     description: >
-      Used in conjuction with severity or checks, set this valid to fail the build based on agreggated project
-      vulnerabilities or scan level. Valid values are "project" or "scan". Defaults to "project".
+      Used in conjuction with severity or checks, set this valid to fail the build based on agreggated project vulnerabilities or scan level. Valid values are "project" or "scan". Defaults to "project".
+
     required: false
     default: "project"
   severity:
     description: >
-      Set this to cause the build to fail if vulnerabilities are found exceeding this severity or higher.
-      Valid values are CRITICAL, HIGH, MEDIUM, LOW, NOTE.
+      Set this to cause the build to fail if vulnerabilities are found exceeding this severity or higher. Valid values are CRITICAL, HIGH, MEDIUM, LOW, NOTE.
+
     required: false
   timeout:
     description: Execution timeout (in seconds) setting passed to the underlying scan engine. Defaulted to 60 minutes.
@@ -66,8 +66,9 @@ inputs:
   token:
     description: >
       GitHub token for GitHub API requests. Defaults to GITHUB_TOKEN.
+
     required: true
     default: ${{ github.token }}
 runs:
   using: 'docker'
-  image: 'Dockerfile'
+  image: 'ghcr.io/contrast-security-oss/contrast-local-scan-action:sha-ff0a63a22c9c93d850d6cab1a191217efdc017ae'
