@@ -1,10 +1,33 @@
 const core = require("@actions/core");
 const github = require("@actions/github");
 
+const PULL_REQUEST_EVENT = 'pull_request';
+const WORKFLOW_DISPATCH = 'workflow_dispatch';
+const PUSH_EVENT = 'push';
 const DEFAULT_BRANCH_NAME = github.context.payload?.repository?.default_branch;
 
+const getRef = () => {
+
+  switch (github.context.eventName) {
+    case PULL_REQUEST_EVENT: {
+      return github.context.payload?.pull_request?.head?.ref;
+    }
+    case PUSH_EVENT:
+    case WORKFLOW_DISPATCH: {
+      return github.context.payload?.ref;
+    }
+    default: {
+      core.warning(`Received unexpected github event ${github.context.eventName}`);
+      return github.context.payload?.ref;
+    }
+  }
+};
+
 const thisBranchName = () => {
-  const refParts = github.context.payload.ref.split('/');
+
+  const ref = getRef();
+
+  const refParts = ref.split('/');
 
   return refParts[refParts.length-1];
 };
@@ -40,16 +63,17 @@ const checks = core.getBooleanInput("checks");
 const codeQuality = core.getBooleanInput("codeQuality");
 const defaultBranch = isDefaultBranch();
 
-const label = core.getInput("label") || process.env.GITHUB_REF;
+const ref = getRef();
+const label = core.getInput("label") || ref;
 
 // Pinning the local scanner version
-const localScannerVersion = "1.0.10";
+const localScannerVersion = "1.1.2";
 
 const memory = core.getInput("memory");
 const path = core.getInput("path") || process.env.GITHUB_WORKSPACE;
 const projectName =
   core.getInput("projectName") || process.env.GITHUB_REPOSITORY;
-const ref = process.env.GITHUB_REF;
+
 const resourceGroup = core.getInput("resourceGroup");
 const severity = core.getInput("severity")?.toLowerCase() || undefined;
 const strategy = core.getInput("strategy") || "project";
@@ -60,6 +84,7 @@ const token = core.getInput("token");
 core.debug(`Default branch name : ${DEFAULT_BRANCH_NAME}`);
 core.debug(`This branch name : ${thisBranchName()}`);
 core.debug(`Default branch resolved setting : ${defaultBranch}`)
+core.debug(JSON.stringify(github.context, null, 2));
 
 module.exports = {
   apiUrl,

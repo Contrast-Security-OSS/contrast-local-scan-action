@@ -25,9 +25,9 @@ async function runScan() {
 async function runScanWithChecks() {
   let scanDetails;
 
-  try {
-    await startCheck();
+  await startCheck();
 
+  try {
     scanDetails = await runScan();
 
     core.debug(JSON.stringify(scanDetails, null, 2));
