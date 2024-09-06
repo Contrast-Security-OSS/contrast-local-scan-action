@@ -6,6 +6,8 @@ const WORKFLOW_DISPATCH = 'workflow_dispatch';
 const PUSH_EVENT = 'push';
 const DEFAULT_BRANCH_NAME = github.context.payload?.repository?.default_branch;
 
+core.debug(JSON.stringify(github.context, null, 2));
+
 const getRef = () => {
 
   switch (github.context.eventName) {
@@ -18,7 +20,7 @@ const getRef = () => {
     }
     default: {
       core.warning(`Received unexpected github event ${github.context.eventName}`);
-      return github.context.payload?.ref;
+      return github.context.ref || github.context.payload?.ref;
     }
   }
 };
@@ -84,7 +86,7 @@ const token = core.getInput("token");
 core.debug(`Default branch name : ${DEFAULT_BRANCH_NAME}`);
 core.debug(`This branch name : ${thisBranchName()}`);
 core.debug(`Default branch resolved setting : ${defaultBranch}`)
-core.debug(JSON.stringify(github.context, null, 2));
+
 
 module.exports = {
   apiUrl,
