@@ -20,7 +20,7 @@ const getRef = () => {
     }
     default: {
       core.warning(`Received unexpected github event ${github.context.eventName}`);
-      return github.context.payload?.ref;
+      return github.context.ref || github.context.payload?.ref;
     }
   }
 };
