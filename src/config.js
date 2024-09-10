@@ -18,7 +18,7 @@ const getRef = () => {
     }
     default: {
       core.warning(`Received unexpected github event ${github.context.eventName}`);
-      return github.context.payload?.ref;
+      return github.context.payload?.ref || github.context.ref;
     }
   }
 };
@@ -26,10 +26,18 @@ const getRef = () => {
 const thisBranchName = () => {
 
   const ref = getRef();
+  
+  try {
 
-  const refParts = ref.split('/');
+    const refParts = ref.split('/');
 
-  return refParts[refParts.length-1];
+    return refParts[refParts.length-1];
+  }
+  catch (error) {
+    core.error(`Unable to get current branch name from ref ${ref} : ${error.message}`);
+  }
+
+  return DEFAULT_BRANCH_NAME
 };
 
 const isDefaultBranch = () => {
