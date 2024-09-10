@@ -25,15 +25,16 @@ const getRef = () => {
 
 const thisBranchName = () => {
 
+  const ref = getRef();
+  
   try {
-    const ref = getRef();
 
     const refParts = ref.split('/');
 
     return refParts[refParts.length-1];
   }
   catch (error) {
-    core.error(`Unable to get current branch name : ${error.message}`);
+    core.error(`Unable to get current branch name from ref ${ref} : ${error.message}`);
   }
 
   return DEFAULT_BRANCH_NAME
