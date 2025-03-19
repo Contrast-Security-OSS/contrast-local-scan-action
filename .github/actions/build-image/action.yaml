@@ -40,14 +40,6 @@ runs:
         push: true
         tags: ${{ steps.meta.outputs.tags }}
         labels: ${{ steps.meta.outputs.labels }}
-    
-    - name: install yq
-      shell: bash
-      run: |
-        sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys CC86BB64
-        sudo add-apt-repository ppa:rmescandon/yq -y
-        sudo apt update -y
-        sudo apt install yq -y
 
     - name: Commit changes
       shell: bash

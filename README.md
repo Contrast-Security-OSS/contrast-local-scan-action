@@ -2,6 +2,12 @@
 
 This GitHub action lets you use Contrast Local Scanner to detect vulnerabilities in your code without uploading your code to Contrast's servers.
 
+## Local Scan Engine
+
+The github action uses Contrast local scan engine version 1.1.6.
+
+Release notes for the local scan engine can be viewed here [Scan Release Notes](https://docs.contrastsecurity.com/en/scan-release-notes-and-archive.html)
+
 ## Supported Languages
 - ASP.NET
 - C
