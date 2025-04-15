@@ -43,10 +43,14 @@ async function waitForScanCompletion(projectId, scanId) {
   return scan;
 }
 
-async function getProjectSeverities(projectId) {
-  return await request(
-    `/projects/${projectId}/results/severities?${RESULTS_OPEN_QUERY_STRING}`,
-  );
+async function getProjectSeverities(projectId, newVulnerabilitiesOnly) {
+  let projectSeveritiesQueryUrl = `/projects/${projectId}/results/severities?${RESULTS_OPEN_QUERY_STRING}`;
+
+  if (newVulnerabilitiesOnly === true) {
+    projectSeveritiesQueryUrl = projectSeveritiesQueryUrl + '&isNew=true';
+  }
+
+  return await request(projectSeveritiesQueryUrl);
 }
 
 async function getScanSeverities(projectId, scanId) {
@@ -55,14 +59,14 @@ async function getScanSeverities(projectId, scanId) {
   );
 }
 
-async function getSeverities(projectId, scanId) {
+async function getSeverities(projectId, scanId, newVulnerabilitiesOnly = false) {
   const scan = await waitForScanCompletion(projectId, scanId);
 
   if (scan.status !== COMPLETED) {
     throw new Error(`Scan finished with a status of ${scan.status}`);
   }
 
-  const projectSeverities = await getProjectSeverities(projectId);
+  const projectSeverities = await getProjectSeverities(projectId, newVulnerabilitiesOnly);
   const scanSeverities = await getScanSeverities(projectId, scanId);
 
   return {

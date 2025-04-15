@@ -52,6 +52,19 @@ const isDefaultBranch = () => {
   return DEFAULT_BRANCH_NAME === thisBranchName();
 };
 
+const isNewVulnerabilitiesOnly = () => {
+
+  const input = core.getInput("new")?.toLowerCase();
+
+  if (["true", "false"].includes(input)) {
+    core.info(`User set new to ${input}`);
+    return core.getBooleanInput("new");
+  }
+
+  // If not specified, we look for new vulnerabilities only when not on the default branch
+  return !isDefaultBranch();
+};
+
 const requiredInputOptions = {required:true};
 
 const apiUrl = core.getInput("apiUrl", requiredInputOptions);
@@ -70,12 +83,13 @@ const apiAuthHeader = Buffer.from(`${apiUserName}:${apiServiceKey}`).toString(
 const checks = core.getBooleanInput("checks");
 const codeQuality = core.getBooleanInput("codeQuality");
 const defaultBranch = isDefaultBranch();
+const newVulnerabilitiesOnly = isNewVulnerabilitiesOnly();
 
 const ref = getRef();
 const label = core.getInput("label") || ref;
 
 // Pinning the local scanner version
-const localScannerVersion = "1.1.6";
+const localScannerVersion = "1.1.7-SNAPSHOT";
 
 const memory = core.getInput("memory");
 const path = core.getInput("path") || process.env.GITHUB_WORKSPACE;
@@ -108,6 +122,7 @@ module.exports = {
   label,
   localScannerVersion,
   memory,
+  newVulnerabilitiesOnly,
   path,
   projectName,
   ref,

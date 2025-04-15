@@ -40,6 +40,9 @@ inputs:
   memory:
     description: Memory setting passed to the underlying scan engine. Defaulted to 8g
     required: false
+  new:
+    description: Set this to true or false to only fail the action on new vulnerabilities. This defaults to true when on a non default branch.
+    required: false
   path:
     description: Path to scan with local scanner. Defaults to the current repository path.
     required: false
