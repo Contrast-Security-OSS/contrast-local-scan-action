@@ -40,6 +40,9 @@ inputs:
   memory:
     description: Memory setting passed to the underlying scan engine. Defaulted to 8g
     required: false
+  new:
+    description: Set this to true or false to only fail the action on new vulnerabilities. This defaults to true when on a non default branch.
+    required: false
   path:
     description: Path to scan with local scanner. Defaults to the current repository path.
     required: false
@@ -71,4 +74,4 @@ inputs:
     default: ${{ github.token }}
 runs:
   using: 'docker'
-  image: 'docker://ghcr.io/contrast-security-oss/contrast-local-scan-action:sha-ac9a938bf17b9f140d7fb3b52d9d21619cec40e6'
+  image: 'docker://ghcr.io/contrast-security-oss/contrast-local-scan-action:sha-350bfa17e35bc1f0e4432a0fe1ba344e0ed5f5a8'

@@ -13,6 +13,7 @@ const {
   defaultBranch,
   label,
   memory,
+  newVulnerabilitiesOnly,
   path,
   projectName,
   ref,
@@ -129,7 +130,7 @@ async function getScanDetailsFromOutput(scanOutput) {
   };
 
   if (severity || checks) {
-    const { project, scan } = await getSeverities(projectId, scanId);
+    const { project, scan } = await getSeverities(projectId, scanId, newVulnerabilitiesOnly);
     Object.assign(scanDetails.project, mapSeverities(project));
     Object.assign(scanDetails.scan, mapSeverities(scan));
   }

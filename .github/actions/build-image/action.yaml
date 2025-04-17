@@ -49,6 +49,9 @@ runs:
         git config --global user.name 'Github'
         git config --global user.email 'github@users.noreply.github.com'
 
+        git pull
+
         yq e ".runs.image = env(IMAGE_TAG)" -i action.yml
+
         git add action.yml
         git diff-index --quiet HEAD || (git commit -m "[Auto] Image tag updated latest pushed version" && git push)
