@@ -4,7 +4,7 @@ This GitHub action lets you use Contrast Local Scanner to detect vulnerabilities
 
 ## Local Scan Engine
 
-The github action uses Contrast local scan engine version 1.1.7.
+The github action uses Contrast local scan engine version 1.1.8.
 
 Release notes for the local scan engine can be viewed here [Scan Release Notes](https://docs.contrastsecurity.com/en/scan-release-notes-and-archive.html)
 
@@ -22,6 +22,7 @@ Release notes for the local scan engine can be viewed here [Scan Release Notes](
 - Kotlin
 - PHP
 - Python
+- Ruby
 - Scala
 - VB.NET
 
@@ -122,6 +123,7 @@ up. After which, complete the following steps:
 - resourceGroup : Passes the -r option to the Contrast local scanner to associate newly created projects with the specified resource group.
 - severity : Set this to cause the build to fail if vulnerabilities are found at this severity or higher. Valid values are critical, high, medium, low, note.
 - timeout: Execution timeout (in minutes) setting passed to the underlying scan engine. Defaulted to 60 minutes.
+- new: If set to true, only new vulnerabilities will cause a failure in the job or checks conditions. (Defaulted to true if scanning a branch).
 
 ## Branching
 
