@@ -6,6 +6,8 @@ RUN apk upgrade && \
 COPY package.json /contrast-local-scanner/package.json
 RUN cd /contrast-local-scanner && npm i --production
 
+ENV ACTIONS_CACHE_SERVICE_V2 true
+
 COPY src /contrast-local-scanner/src
 
 ENTRYPOINT ["node", "/contrast-local-scanner/src/index.js"]
