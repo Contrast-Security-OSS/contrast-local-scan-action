@@ -74,4 +74,4 @@ inputs:
     default: ${{ github.token }}
 runs:
   using: 'docker'
-  image: 'docker://ghcr.io/contrast-security-oss/contrast-local-scan-action:sha-b944217d5dfecb43401a9cdeee42772a3dae23b2'
+  image: 'docker://ghcr.io/contrast-security-oss/contrast-local-scan-action:sha-a1ab7b0dc8d2ee0ced62013eda3cfbc0374f81bb'
