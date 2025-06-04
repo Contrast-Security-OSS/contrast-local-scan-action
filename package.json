@@ -1,6 +1,6 @@
 {
   "name": "contrast-local-scan-action",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "Github action that runs Contrast Local Scanner against the current github repository.",
   "author": "Contrast Security",
   "license": "Apache-2.0",
