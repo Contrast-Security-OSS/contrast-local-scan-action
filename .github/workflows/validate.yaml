@@ -47,7 +47,7 @@ jobs:
         with:
           ref: ${{ github.head_ref || github.ref_name }}
       - uses : ./
-        name: Run action against repoository
+        name: Run action against repository
         with:
           apiUrl: ${{ secrets.CONTRAST__API__URL }}
           apiUserName: ${{ secrets.CONTRAST__API__USER_NAME }}
