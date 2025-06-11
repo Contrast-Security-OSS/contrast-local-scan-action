@@ -9,6 +9,8 @@ const { localScannerVersion } = require("./config");
 const CONTRAST_LOCAL_SCANNER = "contrast-local-scanner";
 const LOCAL_SCANNER_PATH = `${process.env.HOME}/${CONTRAST_LOCAL_SCANNER}`;
 const LOCAL_SCANNER_CACHE_KEY = `${CONTRAST_LOCAL_SCANNER}-${localScannerVersion}`;
+const JAR_NAME = `sast-local-scan-runner-${localScannerVersion}.jar`;
+const JAR_FULL_PATH = path.join(LOCAL_SCANNER_PATH, JAR_NAME);
 
 async function getLocalScannerArtifact(version) {
   const artifacts = await getArtifacts(version);
@@ -48,7 +50,13 @@ async function saveCache() {
 }
 
 async function getLocalScannerPath() {
-  core.info(`Checking if ${CONTRAST_LOCAL_SCANNER} previously cached.`);
+
+  if (fs.existsSync(JAR_FULL_PATH)) {
+    core.info(`${CONTRAST_LOCAL_SCANNER} exists locally`);
+    return JAR_FULL_PATH;
+  }
+
+  core.info(`${JAR_FULL_PATH} not found locally, checking if exists in cache.`);
 
   const cacheKey = await restoreCache();
 
