@@ -3,7 +3,13 @@ const core = require("@actions/core");
 
 const { apiApiKey, apiAuthHeader, apiBaseUrl } = require("./config");
 
-const httpClient = new httpm.HttpClient();
+const httpClient = new httpm.HttpClient(
+  'contrast-local-scan-action', // Sets user-agent
+  [],
+  {
+    allowRedirects: false
+  }
+);
 
 async function request(path) {
   const response = await httpClient.getJson(`${apiBaseUrl}/${path}`, {
