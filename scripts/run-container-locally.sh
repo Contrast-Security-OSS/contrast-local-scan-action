@@ -17,13 +17,14 @@ docker run \
   -e GITHUB_JOB="local-test" \
   -e GITHUB_REF="refs/local/test" \
   -e GITHUB_SHA=c9f043b \
-  -e GITHUB_EVENT_NAME="local-test" \
+  -e GITHUB_EVENT_NAME="push" \
   -e GITHUB_REPOSITORY=contrast-local-scan-action-test \
   -e GITHUB_REPOSITORY_OWNER=Contrast-Security-OSS \
   -e GITHUB_REPOSITORY_OWNER_ID=1 \
   -e GITHUB_RUN_ID=1 \
   -e GITHUB_RUN_NUMBER=1 \
   -e GITHUB_WORKSPACE=/workspace \
+  -e GITHUB_EVENT_PATH=/workspace/scripts/github-event.json \
   -w /workspace \
   -v .:/workspace \
   $(docker build -q .)
