@@ -27,5 +27,6 @@ docker run \
   -e GITHUB_EVENT_PATH=/workspace/scripts/github-event.json \
   -w /workspace \
   -v .:/workspace \
+  -v ./target:/root/contrast-local-scanner/ \
   $(docker build -q .)
   
