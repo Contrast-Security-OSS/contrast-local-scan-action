@@ -1,5 +1,10 @@
 #!/bin/bash
 
+# INPUT_${var} where var corresponds to those defined in action.yml uppercased
+#
+# Other env vars are those normally passed in by the github actions runner
+# as defined here https://docs.github.com/en/actions/learn-github-actions/variables#default-environment-variables
+
 docker run \
   -e INPUT_APIURL=$CONTRAST__API__URL \
   -e INPUT_APIUSERNAME=$CONTRAST__API__USER_NAME \
@@ -11,8 +16,8 @@ docker run \
   -e INPUT_CODEQUALITY=false \
   -e INPUT_PATH=src \
   -e INPUT_LABEL="local-test" \
-  -e INPUT_TOKEN=$GITHUB_TOKEN \
-  -e ACTIONS_RUNTIME_TOKEN=$GITHUB_TOKEN \
+  -e INPUT_TOKEN=unknown \
+  -e ACTIONS_RUNTIME_TOKEN=unknown \
   -e RUNNER_TEMP=/tmp \
   -e GITHUB_JOB="local-test" \
   -e GITHUB_REF="refs/local/test" \
