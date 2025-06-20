@@ -4,7 +4,7 @@ This GitHub action lets you use Contrast Local Scanner to detect vulnerabilities
 
 ## Local Scan Engine
 
-The github action uses Contrast local scan engine version 1.1.8.
+The github action uses Contrast local scan engine version 2.0.0.
 
 Release notes for the local scan engine can be viewed here [Scan Release Notes](https://docs.contrastsecurity.com/en/scan-release-notes-and-archive.html)
 

@@ -36,6 +36,14 @@ async function startCheck() {
 }
 
 function getOutputModel(details) {
+
+  if (!details) {
+    return {
+      conclusion: "action_required",
+      report: "Local scan completed with error, please see logs for details"
+    };
+  }
+
   return {
     conclusion: details.thresholdResults > 0 ? "action_required" : "success",
     report: buildReport(details),
