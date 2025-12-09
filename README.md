@@ -69,7 +69,7 @@ up. After which, complete the following steps:
          runs-on: ubuntu-latest
          steps:
            - uses: actions/checkout@v3
-           - uses: Contrast-Security-OSS/contrast-local-scan-action@v1.0.9
+           - uses: Contrast-Security-OSS/contrast-local-scan-action@v1
              with:
                apiUrl: ${{ secrets.CONTRAST__API__URL }}
                apiUserName: ${{ secrets.CONTRAST__API__USER_NAME }}
@@ -87,7 +87,7 @@ up. After which, complete the following steps:
      runs-on: ubuntu-latest
        steps:
          - uses: actions/checkout@v3
-         - uses: Contrast-Security-OSS/contrast-local-scan-action@v1.0.0
+         - uses: Contrast-Security-OSS/contrast-local-scan-action@v1
          with:
            apiUrl: ${{ secrets.CONTRAST__API__URL }}
            apiUserName: ${{ secrets.CONTRAST__API__USER_NAME }}
