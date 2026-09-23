@@ -42,6 +42,7 @@ runs:
       shell: bash
       env:
         METADATA_JSON: ${{ steps.meta.outputs.json }}
+        GITHUB_SHA: ${{ github.sha }}
       run: |
         python - <<'PY'
         import json
@@ -50,14 +51,16 @@ runs:
 
         metadata = json.loads(os.environ["METADATA_JSON"])
         tags = metadata.get("tags", [])
-        if len(tags) != 1:
+        expected_suffix = f":sha-{os.environ['GITHUB_SHA']}"
+        action_tag = next((tag for tag in tags if tag.endswith(expected_suffix)), None)
+        if action_tag is None:
             raise SystemExit(
-                f"Expected exactly one metadata-action tag for the action image, got {len(tags)}"
+                f"Failed to find metadata-action tag ending with {expected_suffix}"
             )
 
         output = Path(os.environ["GITHUB_OUTPUT"])
         with output.open("a", encoding="utf-8") as handle:
-            handle.write(f"action_image=docker://{tags[0]}\n")
+            handle.write(f"action_image=docker://{action_tag}\n")
         PY
 
     - name: Build and push Docker image
