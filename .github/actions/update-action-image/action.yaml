@@ -22,6 +22,7 @@ runs:
         action_image = os.environ["ACTION_IMAGE"]
         in_runs = False
         runs_indent = None
+        updated = False
 
         for index, line in enumerate(lines):
             stripped = line.lstrip()
@@ -39,7 +40,9 @@ runs:
             if stripped.startswith("image:"):
                 lines[index] = f"{' ' * indent}image: '{action_image}'"
                 path.write_text("\n".join(lines) + "\n")
+                updated = True
                 break
-        else:
+
+        if not updated:
             raise SystemExit("Failed to update runs.image in action.yml")
         PY
