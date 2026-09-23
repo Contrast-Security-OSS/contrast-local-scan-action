@@ -41,8 +41,9 @@ runs:
       id: image_ref
       shell: bash
       run: |
+        registry="$(printf '%s' '${{ inputs.registry }}' | tr '[:upper:]' '[:lower:]')"
         image_name="$(printf '%s' '${{ inputs.image_name }}' | tr '[:upper:]' '[:lower:]')"
-        image_tag="${{ inputs.registry }}/${image_name}:sha-$(git rev-parse HEAD)"
+        image_tag="${registry}/${image_name}:sha-$(git rev-parse HEAD)"
         {
           echo "image_tag=${image_tag}"
           echo "action_image=docker://${image_tag}"
