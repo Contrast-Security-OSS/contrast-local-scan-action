@@ -51,7 +51,7 @@ runs:
 
         metadata = json.loads(os.environ["METADATA_JSON"])
         tags = metadata.get("tags", [])
-        sha_tags = [tag for tag in tags if re.search(r":sha-[0-9a-f]{40}$", tag)]
+        sha_tags = [tag for tag in tags if re.search(r":sha-[0-9A-Fa-f]{40}$", tag)]
         if len(sha_tags) != 1:
             raise SystemExit(
                 f"Expected exactly one long sha metadata-action tag, got {len(sha_tags)}"
