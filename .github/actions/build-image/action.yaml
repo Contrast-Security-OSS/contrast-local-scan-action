@@ -41,8 +41,8 @@ runs:
       id: image_ref
       shell: bash
       run: |
-        image_tag="$(printf '%s\n' '${{ steps.meta.outputs.tags }}' | head -n 1)"
-        echo "action_image=docker://${image_tag}" >> "$GITHUB_OUTPUT"
+        image_name="$(printf '%s' '${{ inputs.image_name }}' | tr '[:upper:]' '[:lower:]')"
+        echo "action_image=docker://${{ inputs.registry }}/${image_name}:sha-${{ github.sha }}" >> "$GITHUB_OUTPUT"
 
     - name: Build and push Docker image
       id: push
