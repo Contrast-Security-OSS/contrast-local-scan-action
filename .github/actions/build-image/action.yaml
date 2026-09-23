@@ -42,25 +42,24 @@ runs:
       shell: bash
       env:
         METADATA_JSON: ${{ steps.meta.outputs.json }}
-        METADATA_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
       run: |
         python - <<'PY'
         import json
+        import re
         import os
         from pathlib import Path
 
         metadata = json.loads(os.environ["METADATA_JSON"])
         tags = metadata.get("tags", [])
-        expected_suffix = f":sha-{os.environ['METADATA_SHA']}"
-        action_tag = next((tag for tag in tags if tag.endswith(expected_suffix)), None)
-        if action_tag is None:
+        sha_tags = [tag for tag in tags if re.search(r":sha-[0-9a-f]{40}$", tag)]
+        if len(sha_tags) != 1:
             raise SystemExit(
-                f"Failed to find metadata-action tag ending with {expected_suffix}"
+                f"Expected exactly one long sha metadata-action tag, got {len(sha_tags)}"
             )
 
         output = Path(os.environ["GITHUB_OUTPUT"])
         with output.open("a", encoding="utf-8") as handle:
-            handle.write(f"action_image=docker://{action_tag}\n")
+            handle.write(f"action_image=docker://{sha_tags[0]}\n")
         PY
 
     - name: Build and push Docker image
