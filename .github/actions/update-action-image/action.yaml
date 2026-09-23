@@ -13,47 +13,4 @@ runs:
       env:
         ACTION_IMAGE: ${{ inputs.action_image }}
       run: |
-        python - <<'PY'
-        import os
-        from pathlib import Path
-
-        path = Path("action.yml")
-        lines = path.read_text().splitlines()
-        action_image = os.environ["ACTION_IMAGE"]
-        in_runs = False
-        runs_indent = None
-        child_indent = None
-        image_index = None
-
-        for index, line in enumerate(lines):
-            stripped = line.lstrip()
-            indent = len(line) - len(stripped)
-
-            if not in_runs:
-                if stripped == "runs:":
-                    in_runs = True
-                    runs_indent = indent
-                continue
-
-            if stripped and indent <= runs_indent:
-                break
-
-            if child_indent is None and stripped:
-                child_indent = indent
-
-            if indent == child_indent and stripped.startswith("image:"):
-                image_index = index
-                break
-
-        if image_index is None:
-            raise SystemExit(
-                "Failed to update action.yml: expected a top-level runs.image entry within the runs block"
-            )
-
-        stripped = lines[image_index].lstrip()
-        comment = ""
-        if " #" in stripped:
-            comment = stripped[stripped.index(" #") :]
-        lines[image_index] = f"{' ' * child_indent}image: '{action_image}'{comment}"
-        path.write_text("\n".join(lines) + "\n")
-        PY
+        yq e '.runs.image = env(ACTION_IMAGE)' -i action.yml
