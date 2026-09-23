@@ -42,7 +42,7 @@ runs:
       shell: bash
       env:
         METADATA_JSON: ${{ steps.meta.outputs.json }}
-        GITHUB_SHA: ${{ github.sha }}
+        METADATA_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
       run: |
         python - <<'PY'
         import json
@@ -51,7 +51,7 @@ runs:
 
         metadata = json.loads(os.environ["METADATA_JSON"])
         tags = metadata.get("tags", [])
-        expected_suffix = f":sha-{os.environ['GITHUB_SHA']}"
+        expected_suffix = f":sha-{os.environ['METADATA_SHA']}"
         action_tag = next((tag for tag in tags if tag.endswith(expected_suffix)), None)
         if action_tag is None:
             raise SystemExit(
