@@ -42,7 +42,7 @@ runs:
       shell: bash
       run: |
         registry="$(printf '%s' '${{ inputs.registry }}' | tr '[:upper:]' '[:lower:]')"
-        image_name="$(printf '%s' '${{ inputs.image_name }}' | tr '[:upper:]' '[:lower:]')"
+        image_name="${{ inputs.image_name }}"
         image_tag="${registry}/${image_name}:sha-$(git rev-parse HEAD)"
         {
           echo "image_tag=${image_tag}"
