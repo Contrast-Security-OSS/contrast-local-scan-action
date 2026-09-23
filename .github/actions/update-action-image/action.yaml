@@ -22,6 +22,7 @@ runs:
         action_image = os.environ["ACTION_IMAGE"]
         in_runs = False
         runs_indent = None
+        child_indent = None
         updated = False
 
         for index, line in enumerate(lines):
@@ -37,7 +38,10 @@ runs:
             if stripped and indent <= runs_indent:
                 break
 
-            if stripped.startswith("image:"):
+            if child_indent is None and stripped:
+                child_indent = indent
+
+            if indent == child_indent and stripped.startswith("image:"):
                 comment = ""
                 if " #" in stripped:
                     comment = stripped[stripped.index(" #") :]
