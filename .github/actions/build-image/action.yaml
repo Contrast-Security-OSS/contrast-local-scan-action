@@ -40,9 +40,25 @@ runs:
     - name: Prepare action image reference
       id: image_ref
       shell: bash
+      env:
+        METADATA_JSON: ${{ steps.meta.outputs.json }}
       run: |
-        image_name="$(printf '%s' '${{ inputs.image_name }}' | tr '[:upper:]' '[:lower:]')"
-        echo "action_image=docker://${{ inputs.registry }}/${image_name}:sha-${{ github.sha }}" >> "$GITHUB_OUTPUT"
+        python - <<'PY'
+        import json
+        import os
+        from pathlib import Path
+
+        metadata = json.loads(os.environ["METADATA_JSON"])
+        tags = metadata.get("tags", [])
+        if len(tags) != 1:
+            raise SystemExit(
+                f"Expected exactly one metadata-action tag for the action image, got {len(tags)}"
+            )
+
+        output = Path(os.environ["GITHUB_OUTPUT"])
+        with output.open("a", encoding="utf-8") as handle:
+            handle.write(f"action_image=docker://{tags[0]}\n")
+        PY
 
     - name: Build and push Docker image
       id: push
