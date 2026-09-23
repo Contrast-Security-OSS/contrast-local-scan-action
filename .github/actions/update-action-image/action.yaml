@@ -22,8 +22,8 @@ runs:
         action_image = os.environ["ACTION_IMAGE"]
         in_runs = False
         runs_indent = None
-        child_indent = None
-        updated = False
+        image_index = None
+        image_indent = None
 
         for index, line in enumerate(lines):
             stripped = line.lstrip()
@@ -38,18 +38,19 @@ runs:
             if stripped and indent <= runs_indent:
                 break
 
-            if child_indent is None and stripped:
-                child_indent = indent
+            if stripped.startswith("image:") and (
+                image_indent is None or indent < image_indent
+            ):
+                image_index = index
+                image_indent = indent
 
-            if indent == child_indent and stripped.startswith("image:"):
-                comment = ""
-                if " #" in stripped:
-                    comment = stripped[stripped.index(" #") :]
-                lines[index] = f"{' ' * indent}image: '{action_image}'{comment}"
-                path.write_text("\n".join(lines) + "\n")
-                updated = True
-                break
-
-        if not updated:
+        if image_index is None:
             raise SystemExit("Failed to update runs.image in action.yml")
+
+        stripped = lines[image_index].lstrip()
+        comment = ""
+        if " #" in stripped:
+            comment = stripped[stripped.index(" #") :]
+        lines[image_index] = f"{' ' * image_indent}image: '{action_image}'{comment}"
+        path.write_text("\n".join(lines) + "\n")
         PY
