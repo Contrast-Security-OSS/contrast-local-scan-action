@@ -40,27 +40,14 @@ runs:
     - name: Prepare action image reference
       id: image_ref
       shell: bash
-      env:
-        METADATA_JSON: ${{ steps.meta.outputs.json }}
       run: |
-        python - <<'PY'
-        import json
-        import re
-        import os
-        from pathlib import Path
-
-        metadata = json.loads(os.environ["METADATA_JSON"])
-        tags = metadata.get("tags", [])
-        sha_tags = [tag for tag in tags if re.search(r":sha-[0-9A-Fa-f]{40}$", tag)]
-        if len(sha_tags) != 1:
-            raise SystemExit(
-                f"Expected exactly one long sha metadata-action tag, got {len(sha_tags)}"
-            )
-
-        output = Path(os.environ["GITHUB_OUTPUT"])
-        with output.open("a", encoding="utf-8") as handle:
-            handle.write(f"action_image=docker://{sha_tags[0]}\n")
-        PY
+      run: |
+        image_name="$(printf '%s' '${{ inputs.image_name }}' | tr '[:upper:]' '[:lower:]')"
+        image_tag="${{ inputs.registry }}/${image_name}:sha-$(git rev-parse HEAD)"
+        {
+          echo "image_tag=${image_tag}"
+          echo "action_image=docker://${image_tag}"
+        } >> "$GITHUB_OUTPUT"
 
     - name: Build and push Docker image
       id: push
@@ -68,5 +55,5 @@ runs:
       with:
         context: .
         push: true
-        tags: ${{ steps.meta.outputs.tags }}
+        tags: ${{ steps.image_ref.outputs.image_tag }}
         labels: ${{ steps.meta.outputs.labels }}
