@@ -1,5 +1,10 @@
 name: build-and-deploy-image
 
+outputs:
+  action_image:
+    description: Docker image reference for the freshly built action image
+    value: ${{ steps.image_ref.outputs.action_image }}
+
 inputs:
   registry:
     description: The registry to deploy to
@@ -32,6 +37,11 @@ runs:
         images: ${{ inputs.registry }}/${{ inputs.image_name }}
         tags: type=sha,format=long
 
+    - name: Prepare action image reference
+      id: image_ref
+      shell: bash
+      run: echo "action_image=docker://${{ steps.meta.outputs.tags }}" >> "$GITHUB_OUTPUT"
+
     - name: Build and push Docker image
       id: push
       uses: docker/build-push-action@f2a1d5e99d037542a71f64918e516c093c6f3fc4
@@ -40,18 +50,3 @@ runs:
         push: true
         tags: ${{ steps.meta.outputs.tags }}
         labels: ${{ steps.meta.outputs.labels }}
-
-    - name: Commit changes
-      shell: bash
-      env:
-        IMAGE_TAG: docker://${{ steps.meta.outputs.tags }}
-      run: |
-        git config --global user.name 'Github'
-        git config --global user.email 'github@users.noreply.github.com'
-
-        git pull
-
-        yq e ".runs.image = env(IMAGE_TAG)" -i action.yml
-
-        git add action.yml
-        git diff-index --quiet HEAD || (git commit -m "[Auto] Image tag updated latest pushed version" && git push)
