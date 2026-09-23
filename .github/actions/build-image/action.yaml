@@ -40,7 +40,9 @@ runs:
     - name: Prepare action image reference
       id: image_ref
       shell: bash
-      run: echo "action_image=docker://${{ steps.meta.outputs.tags }}" >> "$GITHUB_OUTPUT"
+      run: |
+        image_tag="$(printf '%s\n' '${{ steps.meta.outputs.tags }}' | head -n 1)"
+        echo "action_image=docker://${image_tag}" >> "$GITHUB_OUTPUT"
 
     - name: Build and push Docker image
       id: push

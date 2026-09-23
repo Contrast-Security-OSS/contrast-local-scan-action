@@ -38,7 +38,10 @@ runs:
                 break
 
             if stripped.startswith("image:"):
-                lines[index] = f"{' ' * indent}image: '{action_image}'"
+                comment = ""
+                if " #" in stripped:
+                    comment = stripped[stripped.index(" #") :]
+                lines[index] = f"{' ' * indent}image: '{action_image}'{comment}"
                 path.write_text("\n".join(lines) + "\n")
                 updated = True
                 break
