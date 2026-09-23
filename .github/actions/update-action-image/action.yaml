@@ -1,0 +1,32 @@
+name: update-action-image
+
+inputs:
+  action_image:
+    description: Docker image reference to write into action.yml
+    required: true
+
+runs:
+  using: composite
+  steps:
+    - name: Update action.yml image reference
+      shell: bash
+      env:
+        ACTION_IMAGE: ${{ inputs.action_image }}
+      run: |
+        python - <<'PY'
+        import os
+        import re
+        from pathlib import Path
+
+        path = Path("action.yml")
+        content = path.read_text()
+        updated, count = re.subn(
+            r'(?m)^(\s*image:\s*)(["\']?).*(?:\2)\s*$',
+            rf"\1'{os.environ['ACTION_IMAGE']}'",
+            content,
+            count=1,
+        )
+        if count != 1:
+            raise SystemExit("Failed to update runs.image in action.yml")
+        path.write_text(updated)
+        PY

@@ -49,27 +49,10 @@ jobs:
       - uses: actions/checkout@v4
         with:
           ref: ${{ github.head_ref || github.ref_name }}
-      - name: Use freshly built image reference
-        env:
-          ACTION_IMAGE: ${{ needs.build-action-docker-image.outputs.action_image }}
-        run: |
-          python - <<'PY'
-          import os
-          import re
-          from pathlib import Path
-
-          path = Path("action.yml")
-          content = path.read_text()
-          updated, count = re.subn(
-              r"(?m)^(\s*image:\s*)'.*'$",
-              rf"\1'{os.environ['ACTION_IMAGE']}'",
-              content,
-              count=1,
-          )
-          if count != 1:
-              raise SystemExit("Failed to update runs.image in action.yml")
-          path.write_text(updated)
-          PY
+      - uses: ./.github/actions/update-action-image
+        name: Use freshly built image reference
+        with:
+          action_image: ${{ needs.build-action-docker-image.outputs.action_image }}
       - uses : ./
         name: Run action against repository
         with:
