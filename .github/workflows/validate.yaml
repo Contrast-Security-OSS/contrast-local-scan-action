@@ -38,6 +38,7 @@ jobs:
           image_name: ${{ env.IMAGE_NAME }}
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
+          push_token: ${{ secrets.REPOS_AUTO_INCREMENT_PAT }}
   
   verify-action:
     runs-on: ubuntu-latest

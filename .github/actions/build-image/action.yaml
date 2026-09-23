@@ -13,11 +13,16 @@ inputs:
   password:
     description: The password to login to the container registry
     required: true
+  push_token:
+    description: PAT with branch protection bypass permission for committing action.yml
+    required: true
 
 runs:
   using: composite
   steps:
     - uses: actions/checkout@v4
+      with:
+        token: ${{ inputs.push_token }}
     - name: Log in to the Container registry
       uses: docker/login-action@65b78e6e13532edd9afa3aa52ac7964289d1a9c1
       with:

@@ -37,6 +37,7 @@ jobs:
           image_name: ${{ env.IMAGE_NAME }}
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
+          push_token: ${{ secrets.REPOS_AUTO_INCREMENT_PAT }}
 
   verify-action:
     runs-on: ubuntu-latest
@@ -63,9 +64,12 @@ jobs:
       - uses: actions/checkout@v4
         with:
           ref: ${{ github.head_ref || github.ref_name }}
+          token: ${{ secrets.REPOS_AUTO_INCREMENT_PAT }}
       - name: Install modules
         run: npm ci
       - name: release
+        env:
+          GH_TOKEN: ${{ secrets.REPOS_AUTO_INCREMENT_PAT }}
         run: |
           git config --global user.name 'Github'
           git config --global user.email 'github@users.noreply.github.com'
