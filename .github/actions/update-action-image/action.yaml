@@ -45,7 +45,9 @@ runs:
                 image_indent = indent
 
         if image_index is None:
-            raise SystemExit("Failed to update runs.image in action.yml")
+            raise SystemExit(
+                "Failed to update action.yml: expected a top-level runs.image entry within the runs block"
+            )
 
         stripped = lines[image_index].lstrip()
         comment = ""
