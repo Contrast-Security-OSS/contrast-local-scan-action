@@ -1,5 +1,10 @@
 name: build-and-deploy-image
 
+outputs:
+  action_image:
+    description: Docker image reference for the freshly built action image
+    value: ${{ steps.meta.outputs.tags }}
+
 inputs:
   registry:
     description: The registry to deploy to
@@ -24,7 +29,7 @@ runs:
         registry: ${{ inputs.registry }}
         username: ${{ inputs.username }}
         password: ${{ inputs.password }}
-    
+
     - name: Extract metadata (tags, labels) for Docker
       id: meta
       uses: docker/metadata-action@9ec57ed1fcdbf14dcef7dfbe97b2010124a938b7
@@ -40,18 +45,3 @@ runs:
         push: true
         tags: ${{ steps.meta.outputs.tags }}
         labels: ${{ steps.meta.outputs.labels }}
-
-    - name: Commit changes
-      shell: bash
-      env:
-        IMAGE_TAG: docker://${{ steps.meta.outputs.tags }}
-      run: |
-        git config --global user.name 'Github'
-        git config --global user.email 'github@users.noreply.github.com'
-
-        git pull
-
-        yq e ".runs.image = env(IMAGE_TAG)" -i action.yml
-
-        git add action.yml
-        git diff-index --quiet HEAD || (git commit -m "[Auto] Image tag updated latest pushed version" && git push)
